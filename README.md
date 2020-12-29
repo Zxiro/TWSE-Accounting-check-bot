@@ -11,6 +11,8 @@ Getting the specific compaines odd accounting information asap by using Line Bot
 ## Framework
 - Django 3.1.4
 - Python 3.6
+## Finite State Machine Flow
+![Imgur](https://i.imgur.com/gpqQrZR.png)
 ## Function Introduction
 **Enter Start to get service**
 ![Imgur](https://i.imgur.com/NAB2AC6.jpg)
