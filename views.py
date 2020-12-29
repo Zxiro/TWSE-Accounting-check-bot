@@ -1,6 +1,5 @@
 import requests
 import logging
-from abc import ABC, abstractmethod
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from django.http.request import HttpRequest
@@ -39,12 +38,35 @@ def callback(req : HttpRequest):
         for event in events:
             if event.source.user_id not in machine:
                 machine[event.source.user_id] = TocMachine(
-                    states = ['start'], 
+                    states = ['start','all_stock', 'single_stock'], 
                     transitions =[
-                          
                         { #options and fsm go back to start
                             "trigger" : "advance",
-                            "source" : ["start"],
+                            "source" : "start",
+                            "dest" : "all_stock",
+                            "conditions" : "going_all"
+                        },
+                        { #options and fsm go back to start
+                            "trigger" : "advance",
+                            "source" : "start",
+                            "dest" : "single_stock",
+                            "conditions" : "going_single"
+                        },
+                        { #options and fsm go back to start
+                            "trigger" : "advance",
+                            "source" : "single_stock",
+                            "dest" : "single_stock",
+                            "conditions" : "back_single"
+                        },
+                        { #options and fsm go back to start
+                            "trigger" : "advance",
+                            "source" : "all_stock",
+                            "dest" : "all_stock",
+                            "conditions" : "back_all"
+                        },
+                        { #options and fsm go back to start
+                            "trigger" : "advance",
+                            "source" : ["start", "all_stock", "single_stock"],
                             "dest" : "start",
                             "conditions" : "back_start"
                         },
