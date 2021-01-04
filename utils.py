@@ -1,6 +1,7 @@
 import os
 import pyimgur
 import scrapy
+import time
 import datetime as dt
 import matplotlib.pyplot as plt
 import requests as req
@@ -19,19 +20,17 @@ channel_access_token = settings.LINE_CHANNEL_ACCESS_TOKEN
 def search_stock(s_type, index):
     if(s_type == 0):
         res = req.get(
-            'http://moneydj.emega.com.tw/js/StockTable.htm'
+            'https://www.tej.com.tw/webtej/doc/uid.htm'
         )
         res.encoding = 'big5'
         soup = BeautifulSoup(res.text, 'html.parser')
         soup.encode('UTF-8')
-        stock_list = soup.find_all('td')
-        stock_name = ''
+        stock_list = soup.find_all('font')
         for s in stock_list:
-            name = s.text
-            name = name[:len(index)]
-            if(name.isdigit() == False and str(name) == index):
-                stock_name = num
-            num = s.text[:4]
+            if(index in s.text):
+                stock_name = s.text[:5]
+                stock_name = stock_name.replace(" ", "")
+                return stock_name
         if (stock_name == ''):
             return '無此公司!'
         return stock_name
